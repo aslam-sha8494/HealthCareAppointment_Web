@@ -1,0 +1,63 @@
+﻿@model HealthCareAppointment.HealthCare_BLL.Models.Dashboard
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <div class="col-md-12">
+            <div class="col-md-8"><h4>Welcome <b>@Session["Username"].ToString()</b></h4></div>
+            <div class="col-md-4">
+                <h4>Login User Role - @Session["Role"].ToString()</h4>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div>
+            <h5>
+                HCL Healthcare, a delivery arm of HCL Groups, is a nationwide network of multi-specialty clinics with a key focus on corporate health - adopting global best practices for medical quality and training, using evidence-based treatments and integrating advanced technology. HCL Healthcare’s primary offerings include Preventive Health Solutions, Managed Care Plans, Dentistry solutions, and Wellness & Wellbeing programs which aim to provide the whole continuum of care for chronic and acute diseases. Being a trusted long-term care partner, HCL Healthcare is rapidly and constantly evolving to build digitally enabled health solutions for corporate India.
+                HCL Healthcare will offer unmatched patient experience and outcomes by adopting global best practices for medical quality and training, using evidence based treatments and integrating advanced technology. HCL Healthcare is determined to be the trusted long-term care partner for people in health or illness.
+            </h5>
+        </div>
+        <br />
+        <br />
+        <br />
+        @if (@Session["Role"].ToString() == "Admin")
+        {
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav" style="align-self:flex-end">
+                    <li>@Html.ActionLink("Location", "Login", "Account", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Patient", "Register", "Account", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Doctor", "Register", "Account", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Appointment", "Appointmentdashboard", "Appointment", new { area = "" }, null)</li>
+                </ul>
+            </div>
+        }
+        else if (@Session["Role"].ToString() == "Doctor")
+        {
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav" style="align-self:flex-end">
+                    <li>@Html.ActionLink("Appointment", "Appointmentdashboard", "Appointment", new { area = "" }, null)</li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav" style="align-self:flex-end">
+                    <li>@Html.ActionLink("Appointment List", "Appointmentdashboard", "Appointment", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Book Appointment", "Appointment", "Appointment", new { area = "" }, null)</li>
+                </ul>
+            </div>
+        }
+    </div>
+}
+
+

@@ -1,0 +1,32 @@
+﻿<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container col-md-12">
+        <div class="col-md-1"></div>
+        <div class="navbar-header col-md-7">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Healthcare Appointment", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="col-md-2"></div>
+        <div class="navbar-collapse collapse col-md-2">
+            <div class="text-right">
+                <ul class="nav navbar-nav" style="align-self:flex-end">
+                    @*<li>@Html.ActionLink("Dashboard", "Dashboard", "Home", new { area = "" }, null)</li>*@
+
+                    @if (HttpContext.Current.Session["UserId"] != null && HttpContext.Current.Session["UserId"].ToString() != "")
+                    {
+                        <li> @Html.ActionLink("Logout", "Logout", "Home", new { area = "", @class = "text-align: center;" }, null) </li>
+
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Login", "Login", "Account", new { area = "" }, null)</li>
+                        <li>@Html.ActionLink("Register", "Register", "Account", new { area = "" }, null)</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

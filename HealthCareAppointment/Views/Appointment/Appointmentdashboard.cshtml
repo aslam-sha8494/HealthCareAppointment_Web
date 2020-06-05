@@ -1,0 +1,99 @@
+﻿@model IEnumerable<HealthCareAppointment.HealthCare_BLL.Models.Appointment>
+
+@{
+    ViewBag.Title = "Appointmentdashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h3>Appointments </h3>
+            <div class="clearfix"></div>
+        </div>
+        @if (@Session["Role"].ToString() == "Patient")
+        {
+            <div class="col-md-12">
+                <div class="col-md-10"></div>
+                <div class="col-md-2"><a href="@Url.Action("Appointment", "Appointment", new { id = 0 })" class="btn btn-primary btn-xs">Create</a></div>
+                <br />
+            </div>
+        }
+        <br /><br />
+        <div class="x_content">
+            <table id="appointments" class=" data table table-striped no-margin">
+                <thead>
+                    <tr>
+                        <th>Token No</th>
+                        <th>Patient name</th>
+                        <th>Phone</th>
+                        <th>Date</th>
+                        <th>Slot</th>
+                        <th>Doctor</th>
+                        <th>Specialization</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.AppointmentId</td>
+                            <td>@item.UserRegisters.FullName</td>
+                            <td>@item.UserRegisters.PhoneNumber</td>
+                            <td>@item.AppointmentDate.ToString("MMM")-@item.AppointmentDate.ToString("d ")-@item.AppointmentDate.ToString("yyyy")</td>
+                            <td>@item.TimeSlot.SlotTime</td>
+                            <td>@item.Doctors.DoctorName</td>
+                            <td>@item.Specialization.SpecializationName</td>
+                            <td>
+                                @{
+                                    if (item.Status.ToString() == "1")
+                                    {
+                                        <a href="#" style="padding: 3px 10px 3px 10px; background-color:green " class="badge" readonly>Active</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" style="padding: 3px 10px 3px 10px; background-color:greenyellow" class="badge" readonly>Inactive</a>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit","Appointment", new { id = item.AppointmentId})" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>Edit</a>
+                                <a href="#" onclick="DeleteClick(@item.AppointmentId)" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div>
+    @Html.ActionLink("Back to Dashboard", "Dashboard", "Home")
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#appointments').DataTable();
+
+            $(function () {
+                var result = '@TempData["EditResultMessage"]';
+                if (result != '') {
+                    toastr.success("", result);
+                }
+            });
+
+        });
+        function DeleteClick(req_id) {
+            if (confirm(" Are you sure you want to delete the record?")) {
+            window.location.href = "@Url.Action("Deleteappointment", "Appointment")?id=" + req_id;
+            }
+        }
+    </script>
+}
+

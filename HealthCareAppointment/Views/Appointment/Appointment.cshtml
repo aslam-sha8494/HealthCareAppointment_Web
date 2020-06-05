@@ -1,0 +1,115 @@
+﻿@model HealthCareAppointment.HealthCare_BLL.Models.Appointment
+
+@{
+    ViewBag.Title = "Book Appointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("AppointmentSave", "Appointment", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "animate form login_form", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>Appointment</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.StateId, new SelectList(Model.StateList, "StateId", "StateName"), "Select State", new { @class = "form-control", id = "StateId" })
+                @Html.ValidationMessageFor(m => m.StateId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.LocationId, new SelectList(Model.LocationList, "LocationId", "LocationName"), "Select Location", new { @class = "form-control", id = "LocationId" })
+                @Html.ValidationMessageFor(m => m.LocationId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SpecializationId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.SpecializationId, new SelectList(Model.SpecializationList, "SpecializationId", "SpecializationName"), "Select Specialization", new { @class = "form-control", id = "SpecializationId" })
+                @Html.ValidationMessageFor(m => m.SpecializationId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DoctorId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.DoctorId, new SelectList(Model.DoctorList, "DoctorId", "DoctorName"), "Select Doctor", new { @class = "form-control", id = "DoctorId" })
+                @Html.ValidationMessageFor(m => m.DoctorId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppointmentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AppointmentDate, new { htmlAttributes = new { @class = "date-picker" } })
+                @Html.ValidationMessageFor(model => model.AppointmentDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TimeSlotId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.TimeSlotId, new SelectList(Model.TimeSlotList, "TimeSlotId", "SlotTime"), "Select TimeSlot", new { @class = "form-control", id = "SlotTime" })
+                @Html.ValidationMessageFor(m => m.TimeSlotId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="BookAppointment" value="Book Appointment" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+<div class="col-md-12">
+    @Html.ActionLink("Back", "Dashboard", "Home", new { area = "" }, null)
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+             $(function () {
+                var result = '@TempData["ResultMessage"]';
+                if (result != '') {
+                    toastr.success("", result);
+                }
+            });
+
+            //$('.date-picker').datepicker({
+            //    //minDate: 0,
+            //    format: "m/d/yyyy",
+            //    todayHighlight: true,
+            //    clearBtn: true,
+            //    orientation: "bottom left",
+            //    autoclose: true
+            //});
+
+            $.ajax({
+                url: "http://localhost:62093/api/Appointment/Doctorsbyspecialization",
+                type: 'GET',
+                contentType:'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    var items = '<option value="">Select Doctor</option>';
+                    $.each(data, function (i, Doctors) {
+                        items += "<option value='" + Doctors.DoctorId + "'>" + Doctors.DoctorName
+                            + "</option>";
+                    });
+                    //$('#DoctorId').html(items);
+                },
+                error: function () {
+                    console.log('Error in Database');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,74 @@
+﻿@model HealthCareAppointment.HealthCare_BLL.Models.Appointment
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.AppointmentId)
+    <div class="form-horizontal">
+        <h4>Edit Appointment</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.StateId, new SelectList(Model.StateList, "StateId", "StateName"), "Select State", new { @class = "form-control", id = "StateId" })
+                @Html.ValidationMessageFor(m => m.StateId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.LocationId, new SelectList(Model.LocationList, "LocationId", "LocationName"), "Select Location", new { @class = "form-control", id = "LocationId" })
+                @Html.ValidationMessageFor(m => m.LocationId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SpecializationId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.SpecializationId, new SelectList(Model.SpecializationList, "SpecializationId", "SpecializationName"), "Select Specialization", new { @class = "form-control", id = "SpecializationId" })
+                @Html.ValidationMessageFor(m => m.SpecializationId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DoctorId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.DoctorId, new SelectList(Model.DoctorList, "DoctorId", "DoctorName"), "Select Doctor", new { @class = "form-control", id = "DoctorId" })
+                @Html.ValidationMessageFor(m => m.DoctorId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppointmentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AppointmentDate, new { htmlAttributes = new { @class = "date-picker" } })
+                @Html.ValidationMessageFor(model => model.AppointmentDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TimeSlotId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.TimeSlotId, new SelectList(Model.TimeSlotList, "TimeSlotId", "SlotTime"), "Select TimeSlot", new { @class = "form-control", id = "SlotTime" })
+                @Html.ValidationMessageFor(m => m.TimeSlotId, string.Empty, new { @class = "" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="reBookAppointment" value="Rebook Appointment" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="col-md-12">
+    @Html.ActionLink("Appointment", "Appointmentdashboard", "Appointment", new { area = "" }, null)
+</div>
+
